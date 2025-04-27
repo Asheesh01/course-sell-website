@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Selling Platform</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f1f1f1;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background-color: #fffbf2;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .form-container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Course List Styles */
+    .courses-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .course {
+      background-color: white;
+      padding: 15px;
+      margin: 10px;
+      width: 250px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .course button {
+      background-color: #007bff;
+    }
+
+    .course button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Sign In Form -->
+    <div id="signin-form" class="form-container">
+      <h2>Sign In</h2>
+      <form id="signin" onsubmit="signIn(event)">
+        <input type="email" id="signin-email" placeholder="Email" required>
+        <input type="password" id="signin-password" placeholder="Password" required>
+        <button type="submit">Sign In</button>
+      </form>
+      <p>Don't have an account? <a href="javascript:void(0)" onclick="toggleForm('signup')">Sign Up</a></p>
+    </div>
+
+    <!-- Sign Up Form -->
+    <div id="signup-form" class="form-container hidden">
+      <h2>Sign Up</h2>
+      <form id="signup" onsubmit="signUp(event)">
+        <input type="email" id="signup-email" placeholder="Email" required>
+        <input type="password" id="signup-password" placeholder="Password" required>
+        <button type="submit">Sign Up</button>
+      </form>
+      <p>Already have an account? <a href="javascript:void(0)" onclick="toggleForm('signin')">Sign In</a></p>
+    </div>
+
+    <!-- Course List -->
+    <div id="courses-list" class="courses-container hidden">
+      <h2>Choose Your Course</h2>
+      <div id="courses"></div>
+    </div>
+  </div>
+
+  <script>
+    // Function to toggle between Sign In and Sign Up forms
+    function toggleForm(form) {
+      if (form === 'signin') {
+        document.getElementById('signin-form').classList.remove('hidden');
+        document.getElementById('signup-form').classList.add('hidden');
+      } else if (form === 'signup') {
+        document.getElementById('signup-form').classList.remove('hidden');
+        document.getElementById('signin-form').classList.add('hidden');
+      }
+    }
+
+    // Handle Sign In form submission
+    function signIn(event) {
+      event.preventDefault();
+
+      const email = document.getElementById('signin-email').value;
+      const password = document.getElementById('signin-password').value;
+
+      // Here you would typically make an API call to validate the user credentials
+      console.log('Sign In', { email, password });
+
+      // On success, show courses
+      showCourses();
+    }
+
+    // Handle Sign Up form submission
+    function signUp(event) {
+      event.preventDefault();
+
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+
+      // Here you would typically make an API call to create a new user
+      console.log('Sign Up', { email, password });
+
+      // On success, show courses
+      showCourses();
+    }
+
+    // Simulate fetching courses from a backend
+    function showCourses() {
+      document.getElementById('signin-form').classList.add('hidden');
+      document.getElementById('signup-form').classList.add('hidden');
+      document.getElementById('courses-list').classList.remove('hidden');
+
+      const courses = [
+        { id: 1, name: 'Web Development', description: 'Learn to build modern websites.' },
+        { id: 2, name: 'Data Science', description: 'Explore data analysis and machine learning.' },
+        { id: 3, name: 'Digital Marketing', description: 'Master the art of online marketing.' }
+      ];
+
+      const coursesContainer = document.getElementById('courses');
+
+      courses.forEach(course => {
+        const courseElement = document.createElement('div');
+        courseElement.classList.add('course');
+        courseElement.innerHTML = `
+          <h3>${course.name}</h3>
+          <p>${course.description}</p>
+          <button onclick="selectCourse(${course.id})">Select Course</button>
+        `;
+        coursesContainer.appendChild(courseElement);
+      });
+    }
+
+    // Handle course selection
+    function selectCourse(courseId) {
+      alert(`Course ${courseId} selected!`);
+      // Here, you would implement the logic to handle the course selection (e.g., proceed to payment).
+    }
+  </script>
+
+</body>
+</html>
