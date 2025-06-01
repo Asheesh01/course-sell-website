@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Selling Platform</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f1f1f1;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background-color: #fffbf2;
+      padding: 40px 10px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .form-container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+    }
+
+    input {
+      border: 1px solid #ddd;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .courses-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .course {
+      background-color: white;
+      padding: 15px;
+      margin: 10px;
+      width: 250px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .course button {
+      background-color: #007bff;
+    }
+
+    .course button:hover {
+      background-color: #0056b3;
+    }
+
+    .course img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .details {
+      max-width: 800px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+
+    .details h3 {
+      margin-top: 20px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Sign In Form -->
+    <div id="signin-form" class="form-container">
+      <h2>Sign In</h2>
+      <form id="signin" onsubmit="signIn(event)">
+        <input type="email" id="signin-email" placeholder="Email" required>
+        <input type="password" id="signin-password" placeholder="Password" required>
+        <button type="submit">Sign In</button>
+      </form>
+      <p>Don't have an account? <a href="javascript:void(0)" onclick="toggleForm('signup')">Sign Up</a></p>
+    </div>
+
+    <!-- Sign Up Form -->
+    <div id="signup-form" class="form-container hidden">
+      <h2>Sign Up</h2>
+      <form id="signup" onsubmit="signUp(event)">
+        <input type="email" id="signup-email" placeholder="Email" required>
+        <input type="password" id="signup-password" placeholder="Password" required>
+        <button type="submit">Sign Up</button>
+      </form>
+      <p>Already have an account? <a href="javascript:void(0)" onclick="toggleForm('signin')">Sign In</a></p>
+    </div>
+
+    <!-- Course List -->
+    <div id="courses-list" class="courses-container hidden">
+      <h2>Choose Your Course</h2>
+      <div id="courses" style="display: flex; flex-wrap: wrap; justify-content: center;"></div>
+    </div>
+
+    <!-- Course Details -->
+    <div id="course-details" class="details hidden"></div>
+  </div>
+
+  <script>
+    const courses = [
+      {
+        id: 1,
+        name: 'Web Development',
+        description: 'Learn to build modern websites.',
+        image: 'https://static.vecteezy.com/system/resources/previews/001/879/576/original/designing-program-web-apps-on-monitor-screen-or-desktop-teamwork-in-developing-programming-debugging-development-process-illustration-for-website-homepage-header-landing-web-page-template-free-vector.jpg',
+        details: `
+          <h2>What You Will Learn</h2>
+          <ul>
+            <li>Structure websites using HTML5 and style them with CSS3</li>
+            <li>Make your sites interactive using JavaScript</li>
+            <li>Master responsive design and mobile-first development</li>
+            <li>Build dynamic web apps using React.js</li>
+            <li>Create backend servers and RESTful APIs using Node.js & Express</li>
+            <li>Connect apps to databases using MongoDB</li>
+            <li>Deploy your websites using Netlify, Vercel, and GitHub</li>
+            <li>Work with real-world projects and build your portfolio</li>
+            <li>Understand how to get freelance clients and tech jobs</li>
+          </ul>
+
+          <h3>🧱 Course Modules</h3>
+          <ul>
+            <li><strong>Module 1:</strong> Intro to Web Development (tools, frontend vs backend)</li>
+            <li><strong>Module 2:</strong> HTML & CSS Basics + Portfolio Page</li>
+            <li><strong>Module 3:</strong> JavaScript Essentials + To-Do App</li>
+            <li><strong>Module 4:</strong> Responsive Design + Blog Website</li>
+            <li><strong>Module 5:</strong> React.js + Weather App</li>
+            <li><strong>Module 6:</strong> Node.js + Express + REST API</li>
+            <li><strong>Module 7:</strong> MongoDB + Blog API</li>
+            <li><strong>Module 8:</strong> Full-Stack Integration + Notes App</li>
+            <li><strong>Module 9:</strong> Git, GitHub, Deployment</li>
+            <li><strong>Module 10:</strong> Capstone Project + Career Tips</li>
+          </ul>
+
+          <h3>📦 Resources Provided</h3>
+          <ul>
+            <li>Downloadable PDFs, cheat sheets</li>
+            <li>Source code for all projects</li>
+            <li>Quizzes & coding challenges</li>
+            <li>Resume & LinkedIn optimization guide</li>
+          </ul>
+
+          <h3>🏅 Certificate</h3>
+          <p>Get a verifiable certificate on completion with project submission and quiz pass.</p>
+
+          <h3>🎁 Bonuses</h3>
+          <ul>
+            <li>Private Discord community access</li>
+            <li>Monthly live Q&A sessions</li>
+            <li>Freelance proposal templates</li>
+            <li>Interview preparation checklist</li>
+          </ul>
+
+          <h3>🧑‍💻 Who Is This Course For?</h3>
+          <ul>
+            <li>Beginners who want to learn coding</li>
+            <li>Students looking for job-ready skills</li>
+            <li>Freelancers and entrepreneurs</li>
+            <li>Professionals switching careers</li>
+          </ul>
+          <ul>
+            <li> fees: $199</li>
+          </ul>
+        `
+      },
+      {
+        id: 2,
+        name: 'Data Science',
+        description: 'Explore data analysis and machine learning.',
+        image:'https://thumbs.dreamstime.com/b/big-data-center-analyzes-data-science-background-presentation-big-data-center-analyzes-data-science-background-159196598.jpg',
+        details: `<h2>Coming Soon: Data Science Syllabus</h2>
+        <h2>Data Science Mastery Program</h2>
+<p>Become a data-driven decision-maker by mastering the full spectrum of data science skills—no prior experience required. This course guides you from foundational concepts to real-world applications using Python, machine learning, and data visualization.</p>
+
+<h3>What You'll Learn:</h3>
+<ul>
+  <li>Python for Data Analysis</li>
+  <li>Data Wrangling and Cleaning with Pandas & NumPy</li>
+  <li>Data Visualization using Matplotlib and Seaborn</li>
+  <li>Statistics and Probability for Data Science</li>
+  <li>Machine Learning with Scikit-learn</li>
+  <li>Building Predictive Models</li>
+  <li>Working with Real-World Datasets</li>
+  <li>End-to-End Capstone Project</li>
+</ul>
+
+<p><strong>Duration:</strong> 12 weeks</p>
+<p><strong>Level:</strong> Beginner to Intermediate</p>
+<p><strong>Includes:</strong> Certificate of Completion, Lifetime Access, Community Support</p>
+<p><strong>Ideal For:</strong> Students, working professionals, career switchers</p>
+        <h3>Course Features:</h3>
+        <ul>
+          <li>Hands-on coding exercises</li>
+          <li>Real-world case studies</li>
+          <li>Access to exclusive data science community</li>
+          <li>1-on-1 mentorship sessions</li>
+        </ul>
+
+        <p><strong>Fees:</strong> $299</p>
+`
+      },
+      {
+        id: 3,
+        name: 'Digital Marketing',
+        description: 'Master the art of online marketing.',
+        image:'https://th.bing.com/th/id/OIP.BVijQuSzNcga50Bdgd2CHgHaHa?cb=iwp2&rs=1&pid=ImgDetMain',
+        details: `<h2>Coming Soon: Digital Marketing Content</h2>
+        📚 Digital Marketing Mastery Program
+Course Overview:
+Unlock the secrets of online growth with our comprehensive Digital Marketing course. Designed for beginners, business owners, and aspiring marketers, this course equips you with the real-world skills needed to grow brands, drive sales, and build careers in the digital world.
+<ul>
+  <li>Learn the latest digital marketing strategies and tools</li>
+  <li>Hands-on projects to build your portfolio</li>
+  <li>Expert-led live sessions and community support</li>
+  <li>Flexible learning with self-paced modules</li>
+</ul> 
+<h3>What You'll Learn:</h3>
+        <ul>
+          <li>SEO Fundamentals (on-page, off-page, technical SEO)</li>
+          <li>Content Marketing Strategies</li>
+          <li>Social Media Marketing (Facebook, Instagram, LinkedIn)</li>
+          <li>Email Marketing Campaigns</li>
+          <li>Google Ads & PPC Advertising</li>
+          <li>Analytics & Data-Driven Decision Making</li>
+          <li>Building a Personal Brand Online</li>
+          <li>Freelancing & Client Management</li>
+        </ul>
+
+        <h3>Course Features:</h3>
+        <p><strong>Duration:</strong> 8 weeks</p>
+        <p><strong>Level:</strong> Beginner to Intermediate</p>
+        <p><strong>Includes:</strong> Certificate of Completion, Lifetime Access, Community Support</p>
+        <p><strong>Ideal For:</strong> Students, working professionals, career switchers</p>
+        <h3>Course Benefits:</h3>
+        <ul>
+          <li>Hands-on projects to build your portfolio</li>
+          <li>Access to exclusive digital marketing community</li>
+          <li>1-on-1 mentorship sessions with industry experts</li>
+          <li>Job placement assistance and career guidance</li>
+        </ul>
+        <p><strong>Fees:</strong> $249</p>
+
+`
+      },
+      {
+        id: 4,
+        name: 'Graphic Design',
+        description: 'Learn the principles of graphic design.',
+        image: 'https://th.bing.com/th/id/OIP.nI_qF7JrNpPf4PH21U_aCgHaHa?cb=iwp2&rs=1&pid=ImgDetMain',
+        details: `<h2>Coming Soon: Graphic Design Modules</h2>
+        <h2>Graphic Design Mastery Program</h2>
+<p>Transform your creativity into a career with our comprehensive Graphic Design course. Perfect for beginners and aspiring designers, this program covers everything from design principles to advanced software skills.</p>
+<h3>What You'll Learn:</h3>
+<ul>
+  <li>Design Fundamentals (color theory, typography, layout)</li>
+  <li>Adobe Photoshop & Illustrator Essentials</li>
+  <li>Logo Design & Branding</li>
+  <li>Creating Social Media Graphics</li>
+  <li>Web Design Basics (UI/UX principles)</li>
+  <li>Print Design (brochures, posters, business cards)</li>
+  <li>Portfolio Development</li>
+  <li>Freelancing & Client Management</li>
+</ul>
+<h3>Course Features:</h3>
+<p><strong>Duration:</strong> 8 weeks</p>
+<p><strong>Level:</strong> Beginner to Intermediate</p>
+<p><strong>Includes:</strong> Certificate of Completion, Lifetime Access, Community Support</p>
+<p><strong>Ideal For:</strong> Students, working professionals, career switchers</p>
+<ul>
+  <li>Hands-on projects to build your portfolio</li>
+  <li>Access to exclusive design community</li>
+  <li>1-on-1 mentorship sessions with industry experts</li>
+  <li>Job placement assistance and career guidance</li>
+</ul>
+        <p><strong>Fees:</strong> $199</p>
+`
+      },
+      {
+        id: 5,
+        name: 'Mobile App Development',
+        description: 'Build apps for Android and iOS.',
+        image: 'https://riseuplabs.com/wp-content/uploads/2021/07/mobile-application-development-guidelines-riseuplabs.jpg',
+        details: `<h2>Coming Soon: Mobile App Development Curriculum</h2>
+        <h2>Mobile App Development Bootcamp</h2>
+<p>Launch your career in tech by learning to build mobile applications for Android and iOS. This hands-on bootcamp takes you from zero coding knowledge to creating fully functional apps.</p>
+<h3>What You'll Learn:</h3> 
+<ul>
+  <li>Introduction to Mobile Development (Android & iOS)</li>
+  <li>Java & Kotlin for Android Development</li>
+  <li>Swift for iOS Development</li>
+  <li>Building User Interfaces (UI/UX Design)</li>
+  <li>Working with APIs and Databases</li>
+  <li>Publishing Apps on Google Play & App Store</li>
+  <li>App Monetization Strategies</li>
+
+  <li>Capstone Project: Build Your Own App</li>
+</ul>
+<h3>Course Features:</h3>
+<p><strong>Duration:</strong> 10 weeks</p>
+<p><strong>Level:</strong> Beginner to Intermediate</p>
+<p><strong>Includes:</strong> Certificate of Completion, Lifetime Access, Community Support</p>
+<p><strong>Ideal For:</strong> Students, working professionals, career switchers</p>
+<ul>
+  <li>Hands-on coding exercises</li>
+  <li>Real-world app development projects</li>
+  <li>Access to exclusive mobile development community</li>
+  <li>1-on-1 mentorship sessions with industry experts</li>
+  <li>Job placement assistance and career guidance</li>
+</ul>
+        <p><strong>Fees:</strong> $299</p>
+`
+      },
+      {
+        id: 6,
+        name: 'Cybersecurity',
+        description: 'Learn to protect systems and networks.',
+        image: 'https://th.bing.com/th/id/OIP.VanN73JF3kLWr_lH_x6-9wHaEo?cb=iwp2&rs=1&pid=ImgDetMain',
+        details: `<h2>Coming Soon: Cybersecurity Course Details</h2>
+        <h2>Cybersecurity Fundamentals Program</h2>
+<p>Protect the digital world by mastering cybersecurity skills. This course is designed for beginners and covers essential topics to help you secure systems, networks, and data.</p>
+<h3>What You'll Learn:</h3>
+<ul>
+  <li>Introduction to Cybersecurity</li>
+  <li>Network Security Fundamentals</li>
+  <li>Web Application Security</li>
+  <li>Ethical Hacking Basics</li>
+  <li>Incident Response & Forensics</li>
+  <li>Security Policies & Risk Management</li>
+  <li>Hands-on Labs & Real-World Scenarios</li>
+  <li>Preparing for Cybersecurity Certifications (CompTIA Security+, CEH)</li>
+</ul>
+<h3>Course Features:</h3>
+<p><strong>Duration:</strong> 12 weeks</p>
+<p><strong>Level:</strong> Beginner to Intermediate</p>
+<p><strong>Includes:</strong> Certificate of Completion, Lifetime Access, Community Support</p> 
+<p><strong>Ideal For:</strong> Students, working professionals, career switchers</p>
+<ul>
+  <li>Hands-on labs and simulations</li>
+  <li>Access to exclusive cybersecurity community</li>
+  <li>1-on-1 mentorship sessions with industry experts</li>
+  <li>Job placement assistance and career guidance</li>
+</ul>
+        <p><strong>Fees:</strong> $349</p>
+`
+      },
+      {
+        id: 7,
+        name: 'AI & Machine Learning',
+        description: 'Dive into the world of AI and ML.',
+        image: 'https://th.bing.com/th/id/OIP.EF8YD7S1G8IiRiG-1hDhCwHaEJ?cb=iwp2&rs=1&pid=ImgDetMain',
+        details: `<h2>Coming Soon: AI & Machine Learning Course</h2>
+        <h2>AI & Machine Learning Bootcamp</h2>
+<p>Step into the future with our AI & Machine Learning Bootcamp. This course is designed for beginners and covers everything from the basics of AI to building your own machine learning models.</p>
+<h3>What You'll Learn:</h3>
+        <ul>
+          <li>Introduction to AI & Machine Learning</li>
+          <li>Python for Data Science</li>
+          <li>Data Preprocessing & Feature Engineering</li>
+          <li>Supervised & Unsupervised Learning Algorithms</li>
+          <li>Deep Learning with TensorFlow & Keras</li>
+          <li>Natural Language Processing (NLP)</li>
+          <li>Building and Deploying ML Models</li>
+          <li>Capstone Project: Real-World AI Application</li>
+        </ul>
+        <h3>Course Features:</h3>
+        <p><strong>Duration:</strong> 14 weeks</p>
+        <p><strong>Level:</strong> Beginner to Intermediate</p>
+        <p><strong>Includes:</strong> Certificate of Completion, Lifetime Access, Community Support</p>
+        <p><strong>Ideal For:</strong> Students, working professionals, career switchers</p>
+        <ul>
+          <li>Hands-on coding exercises</li>
+          <li>Real-world AI projects</li>
+          <li>Access to exclusive AI community</li>
+          <li>1-on-1 mentorship sessions with industry experts</li>
+          <li>Job placement assistance and career guidance</li>
+        </ul>
+        <p><strong>Fees:</strong> $399</p>
+        `
+      }
+    ];
+
+    function toggleForm(form) {
+      document.getElementById('signin-form').classList.toggle('hidden', form !== 'signin');
+      document.getElementById('signup-form').classList.toggle('hidden', form !== 'signup');
+    }
+
+    function signIn(event) {
+      event.preventDefault();
+      showCourses();
+    }
+
+    function signUp(event) {
+      event.preventDefault();
+      showCourses();
+    }
+
+    function showCourses() {
+      document.getElementById('signin-form').classList.add('hidden');
+      document.getElementById('signup-form').classList.add('hidden');
+      document.getElementById('course-details').classList.add('hidden');
+      document.getElementById('courses-list').classList.remove('hidden');
+
+      const container = document.getElementById('courses');
+      container.innerHTML = '';
+
+      courses.forEach(course => {
+        const div = document.createElement('div');
+        div.className = 'course';
+        div.innerHTML = `
+          <h3>${course.name}</h3>
+          <img src="${course.image}" alt="${course.name}">
+          <p>${course.description}</p>
+          <button onclick="selectCourse(${course.id})">Select Course</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function selectCourse(id) {
+      const course = courses.find(c => c.id === id);
+      if (!course) return;
+
+      document.getElementById('courses-list').classList.add('hidden');
+      const detailsDiv = document.getElementById('course-details');
+      detailsDiv.innerHTML = course.details;
+      detailsDiv.classList.remove('hidden');
+    }
+  </script>
+
+</body>
+</html>
